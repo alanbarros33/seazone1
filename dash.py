@@ -207,11 +207,40 @@ if not filtro.empty:
     st.table(pd.DataFrame.from_dict(perfil_ideal, orient='index', columns=["Valor Ideal"]))
     
     st.markdown("""
-    **Ações recomendadas:**
-    1. Focar aquisição no canal de melhor performance
-    2. Criar programa de incentivos para parceiros com características ideais
-    3. Desenvolver plano de retenção para parceiros em risco
-    """)
+<h2 style="color:var(--primary-text-color); font-size:22px; margin-bottom:20px">📌 Ações Estratégicas Recomendadas</h2>
+
+<div style="margin-bottom:25px">
+<h3 style="color:var(--heading-color); font-size:18px; border-bottom:1px solid var(--secondary-background-color); padding-bottom:8px">1. Priorizar o Canal de Melhor Performance</h3>
+<p style="font-size:15px; line-height:1.5; color:var(--text-color)">
+<strong>Dados:</strong> O canal <strong style="color:var(--primary-color)">{}</strong> apresenta taxa de conversão de <strong>{:.1%}</strong> (vs. média de {:.1%})<br>
+<strong>Ação:</strong> Alocar 60% do orçamento de aquisição neste canal no próximo trimestre.
+</p>
+</div>
+
+<div style="margin-bottom:25px">
+<h3 style="color:var(--heading-color); font-size:18px; border-bottom:1px solid var(--secondary-background-color); padding-bottom:8px">2. Programa "Top Parceiros"</h3>
+<p style="font-size:15px; line-height:1.5; color:var(--text-color)">
+<strong>Critérios:</strong> Taxa conversão > {:.0%} e NPS > {}<br>
+<strong>Benefícios:</strong> Comissão +2%, selo de excelência e suporte prioritário.
+</p>
+</div>
+
+<div style="margin-bottom:15px">
+<h3 style="color:var(--heading-color); font-size:18px; border-bottom:1px solid var(--secondary-background-color); padding-bottom:8px">3. Plano "Resgate" para Riscos</h3>
+<p style="font-size:15px; line-height:1.5; color:var(--text-color)">
+<strong>Identificados:</strong> {} parceiros com NPS < 30 e +60d sem contato<br>
+<strong>Ação:</strong> Contato personalizado em 7 dias com oferta de revisão contratual.
+</p>
+</div>
+""".format(
+    melhor_canal['Canal de aquisição'],
+    melhor_canal['Taxa Média de Conversão'],
+    filtro['Taxa Conversão'].mean(),
+    filtro['Taxa Conversão'].quantile(0.75),
+    int(filtro['NPS da última interação'].quantile(0.75)),
+    risco_churn.shape[0]
+), unsafe_allow_html=True)
+
 else:
     st.warning("Não há dados suficientes para determinar o perfil ideal")
 
